@@ -1,6 +1,20 @@
+$('#eventClick').click(function () {
+    $('#cardsDrawn').html(JSON.stringify(Game.drawCards()));
+    afterText();
+});
 
+function afterText() {
+    var txt1 = "<b>Insert your warriors name:</b>";        // Create element with HTML  
+    var txt3 = document.createElement("input");    // Create with DOM
+    txt3.innerHTML = "jQuery!";
+    $("#cardsDrawn").after(txt1, txt3);          // Insert new elements after <img>
+}
 
-let mainDeck = 
+let playerPoints = 0;
+let computerPoints = 0;
+
+const Game = {
+ mainDeck: 
 [{name: "Bulbasaur", damage:60}, 
 {name: "Caterpie", damage:40},
 {name: "Charmander", damage:60},
@@ -18,29 +32,68 @@ let mainDeck =
 {name: "Rattata", damage:30}, 
 {name: "Squirtle", damage:60}, 
 {name: "Vulpix", damage:50}, 
-{name: "Weedle", damage:40}]
+{name: "Weedle", damage:40}],
 
-let playerHand = [];
-let computerHand = [];
-let usedDeck = [];
+ drawnCards: [],
+ playerHand: [],
+ computerHand: [],
+ usedDeck: [],
 
-function newFunction() {
-    n = Math.floor(Math.random() * mainDeck.length);
-    return n;
-}
+deal() {
+    n = Math.floor(Math.random() * this.mainDeck.length);
+    drawnCards = this.mainDeck.splice(n, 1);
+},
 
-function drawCards(mainDeck){
+drawCards(){
     
     for (let i = 0; i < 3; i++) {
-        n = Math.floor(Math.random() * mainDeck.length);
-        playerHand.push(mainDeck[n]);
-
+        this.deal();
+        this.playerHand.push(drawnCards[0]);
     }
-    return playerHand;
-};
+    for (let c = 0; c < 3; c++) {
+        this.deal();
+        this.computerHand.push(drawnCards[0]);
+    }
+    return this.playerHand;
+},
 
-console.log(drawCards(mainDeck));
+}
 
+
+
+/* 
+//choose creatures for battle
+function computerChoose() {
+    if (computerhand.length == 0) {
+        return computerHand[0];
+    }
+}
+
+let fighterPlayer
+let fighterComputer
+
+let fightResult
+let roundCount
+
+//actual battle
+function FIGHT() {
+    if (fighterPlayer.damage > fighterComputer.damage) {
+        playerPoints++;
+        fightResult = "Win";
+    } else if (fighterPlayer.damage < fighterComputer.damage) {
+        computerPoints++;
+        fightResult = "Lose";
+    } else
+    
+    fightResult = "Tie";
+}
+
+
+
+
+//console.log(drawCards());
+//console.log(computerHand);
+//console.log(playerHand); */
 
 
 
