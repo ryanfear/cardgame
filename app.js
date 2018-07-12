@@ -1,15 +1,93 @@
 $('#eventClick').click(function () {
+ //   Game.drawCards();
+ //   $(Game.playerHand).each( function(name, damage) {
+//        $('#cardsDrawn').append(name + ": " + damage + '<br>')
+//    });
     $('#cardsDrawn').html(JSON.stringify(Game.drawCards()));
     afterText();
 });
 
 function afterText() {
     var txt1 = "<b>Insert your warriors name:</b>";        // Create element with HTML  
-    var txt3 = document.createElement("input");    // Create with DOM
-    txt3.innerHTML = "jQuery!";
-    $("#cardsDrawn").after(txt1, txt3);          // Insert new elements after <img>
+    var txt3 = document.createElement("input");
+    txt3.setAttribute("id", "playerInput");
+    var btnFight = document.createElement("input");     // Create with DOM
+    btnFight.setAttribute("id", "fightButton")
+    btnFight.setAttribute("type", "button");
+    btnFight.setAttribute("value", "Fight!");
+    $("#cardsDrawn").after(txt1, txt3, btnFight);    // Insert new elements after <img>
+    fight();
+
 }
 
+
+
+function fight() {
+$('#fightButton').click(function() {
+    Game.fighterPlayer = [];
+    Game.fighterComputer = Game.computerHand[0];
+    for (let i = 0; i < Game.playerHand.length; i++) {
+        if ((document.getElementById("playerInput").value) === Game.playerHand[i].name) {
+            Game.fighterPlayer = Game.playerHand[i];
+            console.log(Game.fighterPlayer.name);
+        }
+        } 
+        if ((Game.fighterPlayer.hasOwnProperty("name")) === true) {
+            
+          if (Game.fighterPlayer.damage > Game.fighterComputer.damage) {
+                  playerPoints++;
+                  Game.winLoseTie = "Win";
+                console.log("player win")
+              } else if (Game.fighterPlayer.damage < Game.fighterComputer.damage) {
+                  computerPoints++;
+                  Game.winLoseTie = "Lose";
+               console.log("computer win")
+              } else {
+                Game.winLoseTie = "tie";
+              console.log("tie")
+              } 
+              displayResults();
+            } else {
+                alert("Invalid warrior");
+            }
+            //   fightResult = "Tie";  
+  //  let fighterPlayer = document.getElementById("playerInput").value;
+    console.log(Game.fighterComputer.name);
+    
+});
+}
+
+function displayResults() {
+    var vsDisplay = document.createElement("div");
+    vsDisplay.setAttribute("id", "matchupDisplay");
+    $('#fightButton').after(vsDisplay);
+    $('#matchupDisplay').html(Game.fighterPlayer.name + " vs " + Game.fighterComputer.name);
+    
+    var wltDisplay = document.createElement("div");
+    wltDisplay.setAttribute("id", "winlosetieDisplay");
+    $('#matchupDisplay').after(wltDisplay);
+    
+    if (Game.winLoseTie == "Lose" || "Win") {
+        $('#winlosetieDisplay').html("You " + Game.winLoseTie + "!")
+    } else if (Game.winLoseTie == "tie") {
+        $('#winlosetieDisplay').html("The battle was a " + Game.winLoseTie + "!")
+    }
+    
+            
+}
+/*
+if (fighterPlayer.damage > fighterComputer.damage) {
+    //  playerPoints++;
+    //  fightResult = "Win";
+    console.log("player win")
+  } else if (fighterPlayer.damage < fighterComputer.damage) {
+   //   computerPoints++;
+   //   fightResult = "Lose";
+   console.log("computer win")
+  } else
+  console.log("tie")
+//   fightResult = "Tie";  
+*/
 let playerPoints = 0;
 let computerPoints = 0;
 
@@ -38,6 +116,9 @@ const Game = {
  playerHand: [],
  computerHand: [],
  usedDeck: [],
+ fighterPlayer: [],
+ fighterComputer: [],
+ winLoseTie: "",
 
 deal() {
     n = Math.floor(Math.random() * this.mainDeck.length);
@@ -63,10 +144,8 @@ drawCards(){
 
 /* 
 //choose creatures for battle
-function computerChoose() {
-    if (computerhand.length == 0) {
-        return computerHand[0];
-    }
+function setFighters() {
+    let fighterComputer = this.computerHand[0];
 }
 
 let fighterPlayer
@@ -91,9 +170,7 @@ function FIGHT() {
 
 
 
-//console.log(drawCards());
-//console.log(computerHand);
-//console.log(playerHand); */
+ */
 
 
 
